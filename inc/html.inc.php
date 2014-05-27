@@ -330,6 +330,33 @@ function breadcrumbs() {
 	return $path;
 }
 
+function arrayIntersect(&$arr1, &$arr2) {
+    if (!is_array($arr1) || !is_array($arr2)) {
+	if(is_array($arr1))
+	    if (FALSE !== array_search($arr2,$arr1))
+	        return $arr2;
+	    else
+		return NULL;
+	if(is_array($arr2))
+	    if (FALSE !== array_search($arr1,$arr2))
+	        return $arr1;
+	    else
+		return NULL;
+	if ((string) $arr1 == (string) $arr2) {
+            return $arr1;
+	}
+	return NULL;
+    }
+    $commonkeys = array_intersect(array_keys($arr1), array_keys($arr2));
+    $ret = array();
+    foreach ($commonkeys as $key) {
+	$value = arrayIntersect($arr1[$key], $arr2[$key]);
+	if ( $value) 
+            $ret[$key] =& arrayIntersect($arr1[$key], $arr2[$key]);
+    }
+    return $ret;
+}
+
 # generate graph url's for a plugin of a host
 function graphs_from_plugin($host, $plugin, $overview=false) {
 	global $CONFIG;
@@ -342,12 +369,12 @@ function graphs_from_plugin($host, $plugin, $overview=false) {
 		return false;
 
 	foreach ($plugindata as $items) {
-
 		if (
-			$overview && isset($CONFIG['overview_filter'][$plugin]) &&
-			$CONFIG['overview_filter'][$plugin] !== array_intersect_assoc($CONFIG['overview_filter'][$plugin], $items)
+			$overview && isset($CONFIG['overview_filter'][$plugin])
 		) {
-			continue;
+			$test = arrayIntersect($CONFIG['overview_filter'][$plugin], $items);
+			if(empty($test) || count($CONFIG['overview_filter'][$plugin]) != count($test))
+				continue;
 		}
 
 		$items['h'] = $host;
