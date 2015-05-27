@@ -15,5 +15,21 @@
 		},
 		"legend_format": "%5.1lf%s",
 		"datasize": true
+	},
+	"poe_power": {
+		"title": "Interface PoE ({{TI}}) on {{HOST}}",
+		"vertical": "milliWatts",
+		"type": "io",
+		"legend": {
+			"current": {
+				"name": "Current Use",
+				"color": "0000ff"
+			},
+			"limit": {
+				"name": "Limit",
+				"color": "00b000"
+			}
+		},
+		"legend_format": "%5.1lf%s"
 	}
 }

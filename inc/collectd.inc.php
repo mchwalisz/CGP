@@ -145,6 +145,7 @@ function group_plugindata($plugindata) {
 			if (!(
 				$item['p'] == 'libvirt'
 				|| ($item['p'] == 'snmp' && $item['t'] == 'if_octets')
+				|| ($item['p'] == 'snmp' && $item['t'] == 'poe_power')
 				|| ($item['p'] == 'vmem' && $item['t'] == 'vmpage_io')
 			))
 				unset($item['ti']);
